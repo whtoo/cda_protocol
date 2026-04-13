@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 380" font-family="system-ui, sans-serif">
+  <defs>
+    <linearGradient id="radarGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#4dabf7" stop-opacity="0.6"/><stop offset="100%" stop-color="#1864ab" stop-opacity="0.2"/></linearGradient>
+  </defs>
+  <rect x="0" y="0" width="550" height="380" rx="8" fill="#f8f9fa"/>
+  <text x="275" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#212529">CDA-Compatible System Assessment Radar</text>
+  
+  <!-- 六边形背景 -->
+  <polygon points="275,55 380,110 380,200 275,255 170,200 170,110" fill="url(#radarGrad)" stroke="#4dabf7" stroke-width="2"/>
+  <polygon points="275,90 340,125 340,185 275,220 210,185 210,125" fill="none" stroke="#adb5bd" stroke-width="1" stroke-dasharray="4,3"/>
+  
+  <!-- 数据点 -->
+  <polygon points="275,65 365,115 365,195 275,245 185,195 185,115" fill="#4dabf7" opacity="0.3" stroke="#1864ab" stroke-width="2"/>
+  
+  <!-- 维度标签 -->
+  <text x="275" y="48" text-anchor="middle" font-size="10" font-weight="bold" fill="#1864ab">Phase Awareness</text>
+  <text x="390" y="115" text-anchor="start" font-size="10" font-weight="bold" fill="#1864ab">Direction Alignment</text>
+  <text x="390" y="200" text-anchor="start" font-size="10" font-weight="bold" fill="#1864ab">Feedback Loop</text>
+  <text x="275" y="270" text-anchor="middle" font-size="10" font-weight="bold" fill="#1864ab">Topology Compression</text>
+  <text x="150" y="200" text-anchor="end" font-size="10" font-weight="bold" fill="#1864ab">Three-Layer Memory</text>
+  <text x="150" y="115" text-anchor="end" font-size="10" font-weight="bold" fill="#1864ab">Hysteresis Gate</text>
+  
+  <!-- 图例 -->
+  <rect x="80" y="300" width="12" height="12" fill="#1864ab" opacity="0.3" stroke="#1864ab" stroke-width="1"/>
+  <text x="96" y="310" font-size="10" fill="#495057">CDA-Compatible System</text>
+  <rect x="200" y="300" width="12" height="12" fill="none" stroke="#adb5bd" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="216" y="310" font-size="10" fill="#495057">Reference Baseline</text>
+  
+  <text x="275" y="350" text-anchor="middle" font-size="10" fill="#adb5bd">Fig: 6-Dimension CDA Compatibility Radar (first 3 are necessary conditions)</text>
+</svg>

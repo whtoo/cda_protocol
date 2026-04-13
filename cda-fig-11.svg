@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 220" font-family="system-ui, sans-serif">
+  <rect x="0" y="0" width="600" height="220" rx="8" fill="#f8f9fa"/>
+  <text x="300" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#212529">非 Phase-aware 模式下的「上下文抖动」</text>
+  
+  <!-- 时间线 -->
+  <line x1="50" y1="100" x2="550" y2="100" stroke="#adb5bd" stroke-width="2"/>
+  
+  <circle cx="100" cy="100" r="6" fill="#e03131"/>
+  <text x="100" y="80" text-anchor="middle" font-size="10" fill="#c92a2a">23:20:06</text>
+  <text x="100" y="120" text-anchor="middle" font-size="9" fill="#495057">紧急压缩</text>
+  
+  <circle cx="180" cy="100" r="6" fill="#e03131"/>
+  <text x="180" y="80" text-anchor="middle" font-size="10" fill="#c92a2a">23:20:28</text>
+  <text x="180" y="120" text-anchor="middle" font-size="9" fill="#495057">22s后</text>
+  
+  <circle cx="260" cy="100" r="6" fill="#e03131"/>
+  <text x="260" y="80" text-anchor="middle" font-size="10" fill="#c92a2a">23:20:51</text>
+  
+  <circle cx="340" cy="100" r="6" fill="#e03131"/>
+  <text x="340" y="80" text-anchor="middle" font-size="10" fill="#c92a2a">23:21:57</text>
+  
+  <circle cx="420" cy="100" r="6" fill="#e03131"/>
+  <text x="420" y="80" text-anchor="middle" font-size="10" fill="#c92a2a">23:22:20</text>
+  
+  <circle cx="500" cy="100" r="6" fill="#e03131"/>
+  <text x="500" y="80" text-anchor="middle" font-size="10" fill="#c92a2a">23:22:57</text>
+  
+  <!-- 说明 -->
+  <rect x="100" y="145" width="400" height="40" rx="6" fill="#ffe3e3" stroke="#ffa8a8"/>
+  <text x="300" y="162" text-anchor="middle" font-size="11" fill="#c92a2a">6 次紧急压缩，3 分钟内 LLM 6 次收到截断上下文 → 恶性循环</text>
+  
+  <text x="300" y="208" text-anchor="middle" font-size="10" fill="#adb5bd">图：Gateway 在非 Phase-aware 模式下的上下文抖动崩溃</text>
+</svg>

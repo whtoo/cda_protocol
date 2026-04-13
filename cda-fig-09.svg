@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 280" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arrowFB" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2f9e44"/></marker>
+    <filter id="shadowFB"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.1"/></filter>
+  </defs>
+  <rect x="0" y="0" width="600" height="280" rx="8" fill="#f8f9fa"/>
+  <text x="300" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#212529">CDA 反馈闭环：从历史失败中学习</text>
+  
+  <!-- 闭环节点 -->
+  <rect x="200" y="45" width="200" height="40" rx="20" fill="#e7f5ff" stroke="#4dabf7" stroke-width="1.5" filter="url(#shadowFB)"/>
+  <text x="300" y="70" text-anchor="middle" font-size="12" font-weight="bold" fill="#1864ab">当前 Situation</text>
+  
+  <line x1="300" y1="85" x2="300" y2="105" stroke="#2f9e44" stroke-width="2" marker-end="url(#arrowFB)"/>
+  
+  <rect x="200" y="110" width="200" height="40" rx="20" fill="#fff3bf" stroke="#fcc419" stroke-width="1.5" filter="url(#shadowFB)"/>
+  <text x="300" y="135" text-anchor="middle" font-size="12" font-weight="bold" fill="#e67700">经验记录 (hit/miss)</text>
+  
+  <line x1="300" y1="150" x2="300" y2="170" stroke="#2f9e44" stroke-width="2" marker-end="url(#arrowFB)"/>
+  
+  <rect x="170" y="175" width="260" height="40" rx="20" fill="#d3f9d8" stroke="#51cf66" stroke-width="1.5" filter="url(#shadowFB)"/>
+  <text x="300" y="195" text-anchor="middle" font-size="11" font-weight="bold" fill="#2b8a3e">热经验发现 (hitCount≥3)</text>
+  <text x="300" y="208" text-anchor="middle" font-size="9" fill="#495057">stdDev &lt; 0.15</text>
+  
+  <!-- 分支：miss 路径 -->
+  <line x1="400" y1="130" x2="480" y2="130" stroke="#e03131" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <rect x="480" y="110" width="100" height="40" rx="6" fill="#ffe3e3" stroke="#ffa8a8"/>
+  <text x="530" y="130" text-anchor="middle" font-size="10" fill="#c92a2a">方向降权</text>
+  <text x="530" y="143" text-anchor="middle" font-size="8" fill="#868e96">负向过滤</text>
+  
+  <line x1="530" y1="150" x2="530" y2="240" stroke="#e03131" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="530" y1="240" x2="420" y2="240" stroke="#e03131" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="420" y1="240" x2="300" y2="255" stroke="#e03131" stroke-width="1" stroke-dasharray="4,3"/>
+  
+  <!-- 闭环回环 -->
+  <path d="M170,195 Q80,195 80,65 Q80,65 200,65" fill="none" stroke="#2f9e44" stroke-width="2" marker-end="url(#arrowFB)"/>
+  
+  <text x="300" y="270" text-anchor="middle" font-size="10" fill="#adb5bd">图：CDA 的动态演化——miss 记录主动改变下一次 assemble 行为</text>
+</svg>

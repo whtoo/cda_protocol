@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 200" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arrowPhase" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#495057"/></marker>
+  </defs>
+  <rect x="0" y="0" width="650" height="200" rx="8" fill="#f8f9fa"/>
+  <text x="325" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#212529">Phase State Transitions (Semantics-Driven)</text>
+  
+  <!-- 节点 -->
+  <circle cx="100" cy="100" r="28" fill="#e7f5ff" stroke="#4dabf7" stroke-width="2"/>
+  <text x="100" y="96" text-anchor="middle" font-size="11" font-weight="bold" fill="#1864ab">bootstrap</text>
+  <text x="100" y="110" text-anchor="middle" font-size="9" fill="#495057">Cold Start</text>
+  
+  <line x1="128" y1="100" x2="162" y2="100" stroke="#495057" stroke-width="1.5" marker-end="url(#arrowPhase)"/>
+  
+  <circle cx="200" cy="100" r="28" fill="#fff9db" stroke="#fcc419" stroke-width="2"/>
+  <text x="200" y="96" text-anchor="middle" font-size="11" font-weight="bold" fill="#e67700">assemble</text>
+  <text x="200" y="110" text-anchor="middle" font-size="9" fill="#495057">Assemble</text>
+  
+  <line x1="228" y1="100" x2="262" y2="100" stroke="#495057" stroke-width="1.5" marker-end="url(#arrowPhase)"/>
+  
+  <circle cx="300" cy="100" r="28" fill="#f3f0ff" stroke="#9775fa" stroke-width="2"/>
+  <text x="300" y="96" text-anchor="middle" font-size="11" font-weight="bold" fill="#6741d9">ingest</text>
+  <text x="300" y="110" text-anchor="middle" font-size="9" fill="#495057">Ingest</text>
+  
+  <line x1="328" y1="100" x2="362" y2="100" stroke="#495057" stroke-width="1.5" marker-end="url(#arrowPhase)"/>
+  
+  <circle cx="400" cy="100" r="28" fill="#fff3bf" stroke="#fab005" stroke-width="2"/>
+  <text x="400" y="96" text-anchor="middle" font-size="11" font-weight="bold" fill="#e67700">afterTurn</text>
+  <text x="400" y="110" text-anchor="middle" font-size="9" fill="#495057">Evaluate</text>
+  
+  <line x1="428" y1="100" x2="462" y2="100" stroke="#495057" stroke-width="1.5" marker-end="url(#arrowPhase)"/>
+  
+  <circle cx="500" cy="100" r="28" fill="#d3f9d8" stroke="#51cf66" stroke-width="2"/>
+  <text x="500" y="96" text-anchor="middle" font-size="11" font-weight="bold" fill="#2b8a3e">compact</text>
+  <text x="500" y="110" text-anchor="middle" font-size="9" fill="#495057">Compact</text>
+  
+  <!-- 回环 -->
+  <path d="M500,128 Q500,155 325,155 Q100,155 100,128" fill="none" stroke="#adb5bd" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowPhase)"/>
+  <text x="325" y="170" text-anchor="middle" font-size="10" fill="#868e96">Semantic state transitions drive the cycle</text>
+  
+  <text x="325" y="192" text-anchor="middle" font-size="10" fill="#adb5bd">Fig: CDA's 5 Core Phases and Their Transitions</text>
+</svg>

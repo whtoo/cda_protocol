@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300" font-family="system-ui, sans-serif">
+  <defs>
+    <linearGradient id="gradL1" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#4dabf7"/><stop offset="100%" stop-color="#339af0"/></linearGradient>
+    <linearGradient id="gradL2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#fcc419"/><stop offset="100%" stop-color="#fab005"/></linearGradient>
+    <linearGradient id="gradL3" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#94d82d"/><stop offset="100%" stop-color="#82c91e"/></linearGradient>
+    <marker id="arrowDown" markerWidth="8" markerHeight="6" refX="4" refY="6" orient="auto"><path d="M0,0 L4,6 L8,0 Z" fill="#495057"/></marker>
+  </defs>
+  <rect x="0" y="0" width="600" height="300" rx="8" fill="#f8f9fa"/>
+  <text x="300" y="22" text-anchor="middle" font-size="15" font-weight="bold" fill="#212529">Three-Layer Memory Architecture</text>
+  
+  <!-- 第一层 -->
+  <rect x="40" y="40" width="520" height="50" rx="6" fill="url(#gradL1)" opacity="0.9"/>
+  <text x="300" y="62" text-anchor="middle" font-size="13" fill="white" font-weight="bold">LLM Context (Attention Focus) — One-shot memory, current window</text>
+  <text x="300" y="78" text-anchor="middle" font-size="10" fill="#e7f5ff">Determines direct input for current turn</text>
+  
+  <!-- 第二层 -->
+  <rect x="40" y="115" width="520" height="50" rx="6" fill="url(#gradL2)" opacity="0.85"/>
+  <text x="300" y="137" text-anchor="middle" font-size="13" fill="white" font-weight="bold">Hot Memory (Execution Stack) — Volatile, persists across turns</text>
+  <text x="300" y="153" text-anchor="middle" font-size="10" fill="#fff3bf">Current task execution state, tool chains, sub-agents</text>
+  
+  <!-- 第三层 -->
+  <rect x="40" y="190" width="520" height="50" rx="6" fill="url(#gradL3)" opacity="0.85"/>
+  <text x="300" y="212" text-anchor="middle" font-size="13" fill="white" font-weight="bold">Cold Memory (SPC Embedding) — Persistent, vector retrieval</text>
+  <text x="300" y="228" text-anchor="middle" font-size="10" fill="#d8f5a2">Historical experience, non-realtime</text>
+  
+  <!-- 流动箭头 -->
+  <line x1="300" y1="90" x2="300" y2="113" stroke="#495057" stroke-width="2" marker-end="url(#arrowDown)"/>
+  <line x1="300" y1="165" x2="300" y2="188" stroke="#495057" stroke-width="2" marker-end="url(#arrowDown)"/>
+  
+  <text x="560" y="260" text-anchor="end" font-size="11" fill="#495057">↑ Phase-driven flow</text>
+  <text x="300" y="285" text-anchor="middle" font-size="10" fill="#adb5bd">Fig: CDA's Three-Layer Memory Architecture, Flow Driven by Phase</text>
+</svg>

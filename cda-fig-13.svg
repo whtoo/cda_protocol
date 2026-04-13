@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 280" font-family="system-ui, sans-serif">
+  <defs>
+    <linearGradient id="moat1" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#adb5bd"/><stop offset="100%" stop-color="#868e96"/></linearGradient>
+    <linearGradient id="moat2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#ffc078"/><stop offset="100%" stop-color="#f59f00"/></linearGradient>
+    <linearGradient id="moat3" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#8ce99a"/><stop offset="100%" stop-color="#51cf66"/></linearGradient>
+    <linearGradient id="moat4" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#74c0fc"/><stop offset="100%" stop-color="#339af0"/></linearGradient>
+  </defs>
+  <rect x="0" y="0" width="600" height="280" rx="8" fill="#f8f9fa"/>
+  <text x="300" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#212529">CDA 护城河四层金字塔</text>
+  
+  <!-- 金字塔层 -->
+  <polygon points="300,50 130,120 470,120" fill="url(#moat1)" opacity="0.8" stroke="#adb5bd" stroke-width="1"/>
+  <text x="300" y="95" text-anchor="middle" font-size="13" font-weight="bold" fill="white">算法层</text>
+  <text x="300" y="110" text-anchor="middle" font-size="10" fill="#e9ecef">可复制性高 · 无独有算法</text>
+  
+  <polygon points="300,110 170,170 430,170" fill="url(#moat2)" opacity="0.8" stroke="#f59f00" stroke-width="1"/>
+  <text x="300" y="148" text-anchor="middle" font-size="13" font-weight="bold" fill="white">组合层</text>
+  <text x="300" y="162" text-anchor="middle" font-size="10" fill="#fff3bf">Phase × QTS × SCG × 三层内存</text>
+  
+  <polygon points="300,170 210,220 390,220" fill="url(#moat3)" opacity="0.8" stroke="#51cf66" stroke-width="1"/>
+  <text x="300" y="202" text-anchor="middle" font-size="13" font-weight="bold" fill="white">工程艺术层</text>
+  <text x="300" y="216" text-anchor="middle" font-size="10" fill="#d3f9d8">「什么不能做」的真实失败积累</text>
+  
+  <polygon points="300,220 240,260 360,260" fill="url(#moat4)" opacity="0.8" stroke="#339af0" stroke-width="1"/>
+  <text x="300" y="248" text-anchor="middle" font-size="13" font-weight="bold" fill="white">范式层</text>
+  <text x="300" y="262" text-anchor="middle" font-size="10" fill="#e7f5ff">CDA 范式制定者身份</text>
+  
+  <!-- 强度标注 -->
+  <text x="480" y="100" font-size="11" fill="#868e96">强度: 2/10</text>
+  <text x="440" y="150" font-size="11" fill="#e67700">强度: 6/10</text>
+  <text x="400" y="200" font-size="11" fill="#2b8a3e">强度: 7/10</text>
+  <text x="370" y="250" font-size="11" fill="#1864ab">强度: 8/10</text>
+  
+  <text x="300" y="276" text-anchor="middle" font-size="9" fill="#adb5bd">图：CDA 护城河分层分析——从易复制到极难替代</text>
+</svg>

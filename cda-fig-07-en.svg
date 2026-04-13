@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200" font-family="system-ui, sans-serif">
+  <rect x="0" y="0" width="600" height="200" rx="8" fill="#f8f9fa"/>
+  <text x="300" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#212529">QTS Quad-Factor Scoring Model</text>
+  
+  <!-- 公式 -->
+  <rect x="60" y="40" width="480" height="50" rx="6" fill="#e7f5ff" stroke="#4dabf7" stroke-width="1"/>
+  <text x="300" y="60" text-anchor="middle" font-size="14" font-family="monospace" fill="#1864ab">QTS(m, D) = α·intent + β·phase + γ·tool + δ·causal</text>
+  <text x="300" y="78" text-anchor="middle" font-size="10" fill="#495057">where α+β+γ+δ = 1, weights adjustable per scenario</text>
+  
+  <!-- 四个维度 -->
+  <rect x="60" y="105" width="105" height="45" rx="4" fill="#d0ebff" stroke="#74c0fc" stroke-width="1"/>
+  <text x="112" y="125" text-anchor="middle" font-size="10" font-weight="bold" fill="#1864ab">intent_match</text>
+  <text x="112" y="140" text-anchor="middle" font-size="9" fill="#495057">Intent semantic overlap</text>
+  
+  <rect x="185" y="105" width="105" height="45" rx="4" fill="#fff3bf" stroke="#ffc078" stroke-width="1"/>
+  <text x="237" y="125" text-anchor="middle" font-size="10" font-weight="bold" fill="#e67700">phase_match</text>
+  <text x="237" y="140" text-anchor="middle" font-size="9" fill="#495057">Phase consistency</text>
+  
+  <rect x="310" y="105" width="105" height="45" rx="4" fill="#d3f9d8" stroke="#8ce99a" stroke-width="1"/>
+  <text x="362" y="125" text-anchor="middle" font-size="10" font-weight="bold" fill="#2b8a3e">tool_relevance</text>
+  <text x="362" y="140" text-anchor="middle" font-size="9" fill="#495057">Tool relevance</text>
+  
+  <rect x="435" y="105" width="105" height="45" rx="4" fill="#f3f0ff" stroke="#b197fc" stroke-width="1"/>
+  <text x="487" y="125" text-anchor="middle" font-size="10" font-weight="bold" fill="#6741d9">causal_proximity</text>
+  <text x="487" y="140" text-anchor="middle" font-size="9" fill="#495057">Causal chain distance</text>
+  
+  <text x="300" y="185" text-anchor="middle" font-size="10" fill="#adb5bd">Fig: QTS Goes Beyond Traditional Vector Similarity, Adding Semantic Direction as an Extra Dimension</text>
+</svg>

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 300" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2f9e44"/></marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#e03131"/></marker>
+    <filter id="shadow2"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.1"/></filter>
+  </defs>
+  <rect x="0" y="0" width="720" height="300" rx="8" fill="#f8f9fa"/>
+  <text x="360" y="25" text-anchor="middle" font-size="16" font-weight="bold" fill="#212529">CDA's Dual Guarantees</text>
+  
+  <!-- 正向保证 -->
+  <rect x="30" y="45" width="310" height="200" rx="8" fill="white" stroke="#2f9e44" stroke-width="1.5" filter="url(#shadow2)"/>
+  <text x="185" y="72" text-anchor="middle" font-size="15" font-weight="bold" fill="#2f9e44">Positive Guarantee: Same-Direction Advancement</text>
+  <line x1="60" y1="82" x2="310" y2="82" stroke="#e9ecef" stroke-width="1"/>
+  <text x="50" y="105" font-size="12" fill="#495057">All evidence and reasoning</text>
+  <text x="50" y="125" font-size="12" fill="#495057">advance along the previous conclusion's direction</text>
+  <!-- 同向箭头 -->
+  <line x1="80" y1="155" x2="160" y2="155" stroke="#2f9e44" stroke-width="3" marker-end="url(#arrowGreen)"/>
+  <line x1="170" y1="155" x2="250" y2="155" stroke="#2f9e44" stroke-width="3" marker-end="url(#arrowGreen)"/>
+  <text x="165" y="180" text-anchor="middle" font-size="11" fill="#868e96">Evidence chain and thesis move in same direction</text>
+  <text x="50" y="210" font-size="12" fill="#495057">Inspired by PAC Learning</text>
+  <text x="50" y="230" font-size="12" fill="#495057">Find the most reasonable approximate direction to advance</text>
+  
+  <!-- 负向保证 -->
+  <rect x="380" y="45" width="310" height="200" rx="8" fill="white" stroke="#e03131" stroke-width="1.5" filter="url(#shadow2)"/>
+  <text x="535" y="72" text-anchor="middle" font-size="15" font-weight="bold" fill="#e03131">Negative Guarantee: Never Repeat a Dead End</text>
+  <line x1="410" y1="82" x2="660" y2="82" stroke="#e9ecef" stroke-width="1"/>
+  <text x="400" y="105" font-size="12" fill="#495057">No guarantee of finding the correct path</text>
+  <text x="400" y="125" font-size="12" fill="#495057">But guarantees no repeated arguments in the same wrong direction</text>
+  <!-- 死路过滤示意 -->
+  <line x1="440" y1="155" x2="520" y2="155" stroke="#adb5bd" stroke-width="3" stroke-dasharray="6,3"/>
+  <text x="480" y="148" text-anchor="middle" font-size="11" fill="#868e96">Dead End</text>
+  <line x1="550" y1="155" x2="630" y2="155" stroke="#e03131" stroke-width="3" marker-end="url(#arrowRed)"/>
+  <text x="590" y="180" text-anchor="middle" font-size="11" fill="#c92a2a">miss recording → Direction weight reduction</text>
+  <text x="400" y="210" font-size="12" fill="#495057">DFS + dead-end recording</text>
+  <text x="400" y="230" font-size="12" fill="#495057">is true directional exploration</text>
+  
+  <text x="360" y="285" text-anchor="middle" font-size="11" fill="#adb5bd">Fig: CDA's Positive and Negative Guarantees</text>
+</svg>

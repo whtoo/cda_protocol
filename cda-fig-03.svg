@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 300" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2f9e44"/></marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#e03131"/></marker>
+    <filter id="shadow2"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.1"/></filter>
+  </defs>
+  <rect x="0" y="0" width="720" height="300" rx="8" fill="#f8f9fa"/>
+  <text x="360" y="25" text-anchor="middle" font-size="16" font-weight="bold" fill="#212529">CDA 的双重保证</text>
+  
+  <!-- 正向保证 -->
+  <rect x="30" y="45" width="310" height="200" rx="8" fill="white" stroke="#2f9e44" stroke-width="1.5" filter="url(#shadow2)"/>
+  <text x="185" y="72" text-anchor="middle" font-size="15" font-weight="bold" fill="#2f9e44">正向保证：同向推进</text>
+  <line x1="60" y1="82" x2="310" y2="82" stroke="#e9ecef" stroke-width="1"/>
+  <text x="50" y="105" font-size="12" fill="#495057">尽量让所有证据和推理</text>
+  <text x="50" y="125" font-size="12" fill="#495057">沿上一推理结论的方向行进</text>
+  <!-- 同向箭头 -->
+  <line x1="80" y1="155" x2="160" y2="155" stroke="#2f9e44" stroke-width="3" marker-end="url(#arrowGreen)"/>
+  <line x1="170" y1="155" x2="250" y2="155" stroke="#2f9e44" stroke-width="3" marker-end="url(#arrowGreen)"/>
+  <text x="165" y="180" text-anchor="middle" font-size="11" fill="#868e96">证据链与论点同向运动</text>
+  <text x="50" y="210" font-size="12" fill="#495057">借鉴 PAC Learning 思想</text>
+  <text x="50" y="230" font-size="12" fill="#495057">找最合理近似方向推进</text>
+  
+  <!-- 负向保证 -->
+  <rect x="380" y="45" width="310" height="200" rx="8" fill="white" stroke="#e03131" stroke-width="1.5" filter="url(#shadow2)"/>
+  <text x="535" y="72" text-anchor="middle" font-size="15" font-weight="bold" fill="#e03131">负向保证：不重复死路</text>
+  <line x1="410" y1="82" x2="660" y2="82" stroke="#e9ecef" stroke-width="1"/>
+  <text x="400" y="105" font-size="12" fill="#495057">不保证找到正确路径</text>
+  <text x="400" y="125" font-size="12" fill="#495057">但保证不在同一错误方向重复论证</text>
+  <!-- 死路过滤示意 -->
+  <line x1="440" y1="155" x2="520" y2="155" stroke="#adb5bd" stroke-width="3" stroke-dasharray="6,3"/>
+  <text x="480" y="148" text-anchor="middle" font-size="11" fill="#868e96">死路</text>
+  <line x1="550" y1="155" x2="630" y2="155" stroke="#e03131" stroke-width="3" marker-end="url(#arrowRed)"/>
+  <text x="590" y="180" text-anchor="middle" font-size="11" fill="#c92a2a">miss 记录 → 方向降权</text>
+  <text x="400" y="210" font-size="12" fill="#495057">DFS + 死路记录</text>
+  <text x="400" y="230" font-size="12" fill="#495057">才是真正的定向探索</text>
+  
+  <text x="360" y="285" text-anchor="middle" font-size="11" fill="#adb5bd">图：CDA 的正向保证与负向保证</text>
+</svg>

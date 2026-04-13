@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320" font-family="system-ui, sans-serif">
+  <defs>
+    <linearGradient id="uGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4dabf7"/><stop offset="100%" stop-color="#1864ab"/></linearGradient>
+  </defs>
+  <rect x="0" y="0" width="600" height="320" rx="8" fill="#f1f3f5"/>
+  
+  <!-- 坐标轴 -->
+  <line x1="60" y1="260" x2="560" y2="260" stroke="#adb5bd" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="60" y1="260" x2="60" y2="40" stroke="#adb5bd" stroke-width="2"/>
+  <defs><marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#adb5bd"/></marker></defs>
+  
+  <!-- 网格 -->
+  <line x1="60" y1="220" x2="560" y2="220" stroke="#dee2e6" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="60" y1="180" x2="560" y2="180" stroke="#dee2e6" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="60" y1="140" x2="560" y2="140" stroke="#dee2e6" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="60" y1="100" x2="560" y2="100" stroke="#dee2e6" stroke-width="1" stroke-dasharray="4,4"/>
+  
+  <!-- U型曲线 -->
+  <path d="M60,100 C150,220 300,240 400,230 C460,225 500,180 560,110" fill="none" stroke="url(#uGrad)" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="60" cy="100" r="4" fill="#1864ab"/>
+  <circle cx="310" cy="238" r="4" fill="#1864ab"/>
+  <circle cx="560" cy="110" r="4" fill="#1864ab"/>
+  
+  <!-- 标注 -->
+  <text x="310" y="285" text-anchor="middle" font-size="13" fill="#495057">文档位置（Context Position）</text>
+  <text x="30" y="150" text-anchor="middle" font-size="13" fill="#495057" transform="rotate(-90,30,150)">准确率</text>
+  
+  <text x="60" y="80" text-anchor="middle" font-size="12" fill="#1864ab" font-weight="bold">开头 ~75%</text>
+  <text x="310" y="255" text-anchor="middle" font-size="12" fill="#c92a2a" font-weight="bold">中间 ~50%</text>
+  <text x="560" y="90" text-anchor="middle" font-size="12" fill="#1864ab" font-weight="bold">结尾 ~72%</text>
+  
+  <text x="300" y="305" text-anchor="middle" font-size="11" fill="#868e96">图：Lost in the Middle — U型性能曲线（基于 Liu et al., 2024）</text>
+</svg>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 160" font-family="system-ui, sans-serif">
+  <rect x="0" y="0" width="600" height="160" rx="8" fill="#f8f9fa"/>
+  
+  <!-- 左侧：宽路（容量军备） -->
+  <path d="M40,110 Q40,60 150,60 L450,60 Q560,60 560,110" fill="none" stroke="#e03131" stroke-width="4" stroke-dasharray="8,4" opacity="0.6"/>
+  <text x="300" y="50" text-anchor="middle" font-size="12" fill="#c92a2a">The Broad Road: Infinite Context Window Expansion (Arms Race)</text>
+  
+  <!-- 右侧：窄路（方向对齐） -->
+  <path d="M40,120 Q40,100 150,100 L250,100 Q300,100 300,80 Q300,100 350,100 L450,100 Q560,100 560,120" fill="none" stroke="#2f9e44" stroke-width="5" stroke-linecap="round"/>
+  <text x="300" y="138" text-anchor="middle" font-size="13" font-weight="bold" fill="#2b8a3e">The Narrow Road: Precise Semantic Direction Alignment (CDA)</text>
+  
+  <!-- 箭头 -->
+  <polygon points="550,105 565,110 550,115" fill="#2f9e44"/>
+  
+  <text x="300" y="155" text-anchor="middle" font-size="10" fill="#adb5bd">Fig: The Broad Road Is Crowded, the Narrow Road Leads Further</text>
+</svg>
