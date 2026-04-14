@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <style>
+      .bg { fill: #0a0a0f; }
+      .box1 { fill: #1a1a24; stroke: #ff3366; stroke-width: 2; }
+      .box2 { fill: #1a1a24; stroke: #33ff99; stroke-width: 2; }
+      .title { font-family: monospace; font-size: 28px; fill: #ffffff; font-weight: bold; }
+      .label { font-family: monospace; font-size: 16px; fill: #cccccc; }
+      .code { font-family: monospace; font-size: 14px; fill: #888888; }
+      .highlight { fill: #ff3366; font-weight: bold; }
+      .highlight2 { fill: #33ff99; font-weight: bold; }
+      .arrow { stroke: #666666; stroke-width: 2; marker-end: url(#arrowhead); }
+      .x { fill: #ff3366; font-size: 20px; }
+      .check { fill: #33ff99; font-size: 20px; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666666"/>
+    </marker>
+  </defs>
+  
+  <rect width="800" height="500" class="bg"/>
+  
+  <!-- Title -->
+  <text x="400" y="50" text-anchor="middle" class="title">FOR AGENTS WHO REFUSE TO WALK IN CIRCLES</text>
+  
+  <!-- Left Box: BFS Agent -->
+  <rect x="80" y="100" width="280" height="340" rx="8" class="box1"/>
+  <text x="220" y="140" text-anchor="middle" class="label" style="fill:#ff3366; font-size:18px;">BFS AGENT</text>
+  
+  <text x="110" y="180" class="code">memory = 2M tokens</text>
+  <text x="110" y="210" class="code">strategy = store_all()</text>
+  <text x="110" y="240" class="code">turn 500: same mistake</text>
+  <text x="110" y="270" class="code">turn 847: same mistake</text>
+  <text x="110" y="300" class="code">turn 1200: same mistake</text>
+  
+  <text x="220" y="380" text-anchor="middle" class="highlight">WALKING IN CIRCLES</text>
+  <text x="220" y="410" text-anchor="middle" class="code">contextUsage: 111.9%</text>
+  
+  <!-- Right Box: CDA Agent -->
+  <rect x="440" y="100" width="280" height="340" rx="8" class="box2"/>
+  <text x="580" y="140" text-anchor="middle" class="label" style="fill:#33ff99; font-size:18px;">CDA AGENT</text>
+  
+  <text x="470" y="180" class="code">memory = 7% retained</text>
+  <text x="470" y="210" class="code">strategy = align(D)</text>
+  <text x="470" y="240" class="code">turn 500: miss logged ✓</text>
+  <text x="470" y="270" class="code">turn 847: direction filtered</text>
+  <text x="470" y="300" class="code">turn 1287: still aligned</text>
+  
+  <text x="580" y="380" text-anchor="middle" class="highlight2">DEAD ENDS AVOIDED</text>
+  <text x="580" y="410" text-anchor="middle" class="code">contextUsage: 28-40%</text>
+  
+  <!-- VS -->
+  <text x="400" y="280" text-anchor="middle" class="title" style="font-size:36px;">VS</text>
+  
+  <!-- Bottom tag -->
+  <text x="400" y="470" text-anchor="middle" class="code" style="fill:#555555;">github.com/whtoo/cda_protocol · #CDAProtocol</text>
+</svg>

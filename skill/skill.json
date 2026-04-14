@@ -1,0 +1,54 @@
+{
+  "id": "cda-protocol",
+  "name": "CDA Protocol",
+  "version": "1.0.0",
+  "description": "Context Direction Alignment for ultra-long continuous tasks. Stop repeating dead ends.",
+  "author": "Wilson/Blitz",
+  "license": "CC-BY-ND-4.0",
+  "tags": ["context-management", "memory", "alignment", "long-context", "agent-native"],
+  "compatibility": {
+    "runtime": "openclaw >= 0.16.0",
+    "mcp": "1.0"
+  },
+  "hooks": {
+    "assemble": {
+      "description": "Build turn input with phase-aware direction filtering",
+      "entry": "hooks/assemble.js",
+      "config": {
+        "delta_threshold": 0.05,
+        "keep_threshold": 0.75,
+        "compress_threshold": 0.25,
+        "hysteresis_margin": 0.10
+      }
+    },
+    "ingest": {
+      "description": "Chunk and store new messages with semantic direction tags",
+      "entry": "hooks/ingest.js"
+    },
+    "afterTurn": {
+      "description": "Evaluate context quality and alignment score post-turn",
+      "entry": "hooks/afterTurn.js"
+    },
+    "compact": {
+      "description": "Compress context using SCG topology preservation",
+      "entry": "hooks/compact.js",
+      "config": {
+        "causal_chain_n": 3,
+        "retention_target": 0.07
+      }
+    },
+    "bootstrap": {
+      "description": "Cold-start with hot-experience pre-warming",
+      "entry": "hooks/bootstrap.js"
+    }
+  },
+  "exports": {
+    "qts": "lib/qts.js",
+    "scg": "lib/scg.js",
+    "direction": "lib/direction.js"
+  },
+  "install": {
+    "command": "npm install",
+    "post_install": "echo 'CDA Protocol installed. Add the assemble hook to your agent config to activate.'"
+  }
+}
