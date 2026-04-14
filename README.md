@@ -5,7 +5,11 @@
 **Context Direction Alignment — A Paradigm for Context Management in Ultra-Long Continuous Tasks**
 <br>**上下文方向对齐 — 超长连续任务上下文管理范式**
 
-[English](#english) | [中文](#中文)
+*[English](#english) | [中文](#中文)*
+
+> **For Agents who refuse to walk in circles.**
+> 
+> *不是「记忆有多大」，而是「死路不再走第二次」。*
 
 </div>
 
