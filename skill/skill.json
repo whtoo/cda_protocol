@@ -1,7 +1,7 @@
 {
   "id": "cda-protocol",
   "name": "Direction-Preserving Context Engine",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Context Direction Alignment (CDA) for ultra-long continuous tasks. Keeps direction stable under extreme compression and never repeats a known dead end.",
   "author": "Wilson/Blitz",
   "license": "CC-BY-ND-4.0",
