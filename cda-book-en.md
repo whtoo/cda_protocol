@@ -18,7 +18,7 @@ When conversations exceed 20 turns, Agents start to "forget." When the context w
 
 This is not an implementation problem, but a fundamental misalignment of the entire paradigm.
 
-![Figure 1: CDA Core Thesis](cda-fig-01-en.png)
+![Figure 1: CDA Core Thesis](images/cda-fig-01-en.png)
 
 ### 1.2 The Two Routes of Current Solutions, and the Core Problem They Both Miss
 
@@ -69,7 +69,7 @@ ConversationBufferMemory / SummaryMemory / TokenBufferMemory — these schemes a
 
 Stanford's 2023 study (Liu et al., 2024, "Lost in the Middle: How Language Models Use Long Contexts", *TACL*) revealed a striking phenomenon:
 
-![Figure 2: U-Shaped Performance Curve (Lost in the Middle)](cda-fig-02-en.png)
+![Figure 2: U-Shaped Performance Curve (Lost in the Middle)](images/cda-fig-02-en.png)
 
 **LLMs pay high attention to the beginning and end of input context, while systematically neglecting the middle.**
 
@@ -168,7 +168,7 @@ The goal of CDA is to find a C' ⊆ C such that:
 
 #### 2.3.1 Semantic Gradient
 
-![Figure 3: Semantic Gradient Distribution](cda-fig-04-en.png)
+![Figure 3: Semantic Gradient Distribution](images/cda-fig-04-en.png)
 
 Semantic information is not uniformly distributed in context, but follows a gradient distribution. In the direction of the coupling of evidence chains and thesis, direction concentration is high; in orthogonal directions, direction coupling approaches zero.
 
@@ -220,7 +220,7 @@ The problem with traditional compression (truncation / summarization): it only p
 
 CDA's engineering implementation relies on a three-layer orthogonal memory system:
 
-![Figure 4: Three-Layer Memory Architecture](cda-fig-05-en.png)
+![Figure 4: Three-Layer Memory Architecture](images/cda-fig-05-en.png)
 
 ```
 ┌─────────────────────────────────────────┐
@@ -243,7 +243,7 @@ Flow between the three layers is driven by **Phase**, not by time or token count
 
 **5 Core Phases:**
 
-![Figure 5: Phase State Transitions](cda-fig-06-en.png)
+![Figure 5: Phase State Transitions](images/cda-fig-06-en.png)
 
 | Phase | What the LLM Is Doing | Context Needed |
 |-------|----------------------|----------------|
@@ -259,7 +259,7 @@ Phase transitions do not depend on time, but on **semantic state transitions**. 
 
 **Question**: How to measure the similarity between a context fragment and the LLM's attention direction?
 
-![Figure 6: QTS Four-Component Scoring Model](cda-fig-07-en.png)
+![Figure 6: QTS Four-Component Scoring Model](images/cda-fig-07-en.png)
 
 ```
 QTS(message_i, direction) = α × intent_match
@@ -278,7 +278,7 @@ QTS goes beyond simple vector cosine similarity, introducing **semantic directio
 
 ### 2.7 SCG: Semantic Compression That Preserves Structure
 
-![Figure 7: SCG Semantic Compression](cda-fig-08-en.png)
+![Figure 7: SCG Semantic Compression](images/cda-fig-08-en.png)
 
 ```
 Original context
@@ -298,7 +298,7 @@ Key point: SCG preserves **semantic topological structure** during compression, 
 
 ### 2.8 Feedback Loop: CDA's Dynamic Evolution
 
-![Figure 8: CDA Feedback Loop (DFS vs BFS)](cda-fig-03-en.png)
+![Figure 8: CDA Feedback Loop (DFS vs BFS)](images/cda-fig-03-en.png)
 
 CDA is not a static filtering system, but a **dynamic evolution system**:
 
@@ -359,7 +359,7 @@ For each direction d in candidate_directions:
 ```
 
 
-![Figure 9: CDA Feedback Loop Overview](cda-fig-09-en.png)
+![Figure 9: CDA Feedback Loop Overview](images/cda-fig-09-en.png)
 ### Chapter Summary
 
 This chapter establishes the theoretical core of CDA. The core thesis:
