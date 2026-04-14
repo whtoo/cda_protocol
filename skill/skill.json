@@ -1,24 +1,25 @@
 {
   "id": "cda-protocol",
-  "name": "CDA Protocol",
-  "version": "1.0.0",
-  "description": "Context Direction Alignment for ultra-long continuous tasks. Stop repeating dead ends.",
+  "name": "Direction-Preserving Context Engine",
+  "version": "1.1.0",
+  "description": "Context Direction Alignment (CDA) for ultra-long continuous tasks. Keeps direction stable under extreme compression and never repeats a known dead end.",
   "author": "Wilson/Blitz",
   "license": "CC-BY-ND-4.0",
-  "tags": ["context-management", "memory", "alignment", "long-context", "agent-native"],
+  "tags": ["context-management", "memory", "alignment", "long-context", "agent-native", "dead-end-registry"],
   "compatibility": {
     "runtime": "openclaw >= 0.16.0",
     "mcp": "1.0"
   },
   "hooks": {
     "assemble": {
-      "description": "Build turn input with phase-aware direction filtering",
+      "description": "Build turn input with phase-aware direction filtering and dead-end suppression",
       "entry": "hooks/assemble.js",
       "config": {
         "delta_threshold": 0.05,
         "keep_threshold": 0.75,
         "compress_threshold": 0.25,
-        "hysteresis_margin": 0.10
+        "hysteresis_margin": 0.10,
+        "dead_end_penalty": 0.85
       }
     },
     "ingest": {
@@ -26,7 +27,7 @@
       "entry": "hooks/ingest.js"
     },
     "afterTurn": {
-      "description": "Evaluate context quality and alignment score post-turn",
+      "description": "Evaluate context quality, alignment score, and detect dead ends post-turn",
       "entry": "hooks/afterTurn.js"
     },
     "compact": {
@@ -38,17 +39,48 @@
       }
     },
     "bootstrap": {
-      "description": "Cold-start with hot-experience pre-warming",
+      "description": "Cold-start with hot-experience pre-warming and dead-end registry load",
       "entry": "hooks/bootstrap.js"
     }
   },
   "exports": {
     "qts": "lib/qts.js",
     "scg": "lib/scg.js",
-    "direction": "lib/direction.js"
+    "direction": "lib/direction.js",
+    "deadEndRegistry": "lib/deadEndRegistry.js"
+  },
+  "apis": {
+    "registerDeadEnd": {
+      "description": "Explicitly mark a reasoning trace or tool-call pattern as a known dead end.",
+      "params": {
+        "session_id": "string",
+        "trace": "object (reasoning chain / tool calls)",
+        "reason": "string (why it failed)"
+      },
+      "returns": "DeadEndItem"
+    },
+    "listDeadEnds": {
+      "description": "Retrieve known dead ends for a session, useful for debugging or UI dashboards.",
+      "params": {
+        "session_id": "string",
+        "top_k": "number (optional, default 10)"
+      },
+      "returns": "DeadEndItem[]"
+    },
+    "getDirectionState": {
+      "description": "Inspect current semantic direction, drift score, and dead-end matches.",
+      "params": {
+        "session_id": "string"
+      },
+      "returns": {
+        "global_intent": "IntentVector",
+        "drift_score": "number",
+        "dead_end_matches": "DeadEndMatch[]"
+      }
+    }
   },
   "install": {
     "command": "npm install",
-    "post_install": "echo 'CDA Protocol installed. Add the assemble hook to your agent config to activate.'"
+    "post_install": "echo 'Direction-Preserving Context Engine installed. Add the assemble hook to your agent config to activate.'"
   }
 }

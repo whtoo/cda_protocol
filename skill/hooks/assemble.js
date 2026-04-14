@@ -1,27 +1,41 @@
 /**
  * CDA Protocol — Assemble Hook
- * Filters candidate messages by semantic direction and known miss history.
+ * Filters candidate messages by semantic direction and known dead-end registry.
  */
-module.exports = async function assemble(context, config) {
-  const { messages, direction, misses } = context;
-  const { delta_threshold, keep_threshold } = config;
 
-  // Step 1: Filter known dead ends
+const { DeadEndRegistry } = require('../lib/deadEndRegistry');
+
+module.exports = async function assemble(context, config) {
+  const { messages, direction, misses, session_id } = context;
+  const { delta_threshold, keep_threshold, dead_end_penalty = 0.85 } = config;
+
+  // Step 1: Filter known dead ends (legacy miss hash)
   const viable = messages.filter(m => !misses.includes(m.directionHash));
 
-  // Step 2: Score by QTS (stub — replace with real QTS implementation)
-  const scored = viable.map(m => ({
-    ...m,
-    score: qtsStub(m, direction)
-  }));
+  // Step 2: Check Dead-End Registry for current direction similarity
+  const registry = new DeadEndRegistry(context.registryStore);
+  const deadEndMatches = registry.match(session_id, direction.trace || direction, 0.82);
+  const isNearDeadEnd = deadEndMatches.length > 0;
 
-  // Step 3: Apply thresholds
+  // Step 3: Score by QTS (stub — replace with real QTS implementation)
+  const scored = viable.map(m => {
+    let score = qtsStub(m, direction);
+    // Penalize items whose direction hash matches a known dead-end pattern
+    if (isNearDeadEnd && deadEndMatches.some(de => de.similarity > 0.85)) {
+      score *= dead_end_penalty;
+    }
+    return { ...m, score };
+  });
+
+  // Step 4: Apply thresholds
   const keep = scored.filter(m => m.score >= keep_threshold);
 
   return {
     contextItems: keep,
     filteredCount: messages.length - keep.length,
-    directionAligned: true
+    directionAligned: true,
+    deadEndMatches,
+    deadEndSuppressed: isNearDeadEnd
   };
 };
 

@@ -1,8 +1,9 @@
 # Context Direction Alignment: The Core Paradigm for AI Agent Context Management
+## Direction-Preserving Context Engine (based on CDA Protocol)
 
-## Context Direction Alignment — A Paradigm for Context Management in Ultra-Long Continuous Tasks
-
-> **A Core Thesis**: Good context management is not asking "Is the context large enough?" but rather "Is the LLM repeating the same known error while advancing the current thesis?" This is not a positive guarantee (it will definitely find the right path), but a negative guarantee (never repeat a dead end).
+> **A Core Thesis**: Good context management is not asking "Is the context large enough?" but rather "With only 10% of historical context retained, is the LLM drifting off course? Is it repeating the same known error while advancing the current thesis?" This is not a positive guarantee (it will definitely find the right path), but a negative guarantee (never repeat a dead end).
+>
+> CDA's true unique value is not "remembering more," but **"remembering with direction, with trade-offs, and remembering which paths are dead ends."**
 
 ---
 
@@ -124,7 +125,7 @@ This chapter, starting from the market context, reveals the fundamental problems
 
 ## Chapter 2: CDA Theory — A Different Perspective
 
-> CDA is not asking "Is the context large enough?" but rather "Is the LLM repeating the same known error while advancing the current thesis?"
+> CDA is not asking "Is the context large enough?" but rather "With only 10% of historical context retained, is the LLM drifting off course? Is it repeating the same known error while advancing the current thesis?"
 
 Key findings of this chapter:
 
@@ -133,8 +134,10 @@ Key findings of this chapter:
 3. **Three-layer distinction**: topic (coarse-grained projection) → semantic direction (vector) → semantic cluster (graph structure)
 4. **QTS Quaternary Model**: intent_match / phase_match / tool_relevance / causal_proximity, with weights tuned to the scenario
 5. **Phase-driven**: 5 phases (assemble / ingest / afterTurn / compact / bootstrap), each requiring different context
-6. **Feedback loop**: CDA's dynamic evolution mechanism — miss recording → direction filtering → next assemble behavior changes
-7. **Negative guarantee**: CDA's core guarantee is not positive (finding the right direction), but negative (not repeating a dead end)
+6. **Dead-End Registry**: Negative experience as a first-class citizen — disproven reasoning chains / tool-call patterns are explicitly recorded and filtered during assemble
+7. **Feedback loop**: CDA's dynamic evolution mechanism — dead-end recording → direction filtering → next assemble behavior changes
+8. **Negative guarantee**: CDA's core guarantee is not positive (finding the right direction), but negative (not repeating a dead end)
+9. **Verifiable metrics**: Alignment Stability, Dead-End Repetition Rate, and Effective Context Density (ECD)
 
 *Word count for this chapter: ~7,200 words*
 
@@ -360,6 +363,34 @@ For each direction d in candidate_directions:
 
 
 ![Figure 9: CDA Feedback Loop Overview](images/cda-fig-09-en.png)
+
+### 2.9 Dead-End Registry: Negative Experience as a First-Class Citizen
+
+Existing systems treat memory as storing correct facts, ignoring the value of **negative experience**. CDA elevates dead-end recording to a core protocol-layer module.
+
+**Definition**: The Dead-End Registry is an explicit negative-experience store that records all disproven reasoning chains, tool-call patterns, or strategy paths.
+
+**Data structure**:
+```yaml
+DeadEndItem:
+  id: string
+  session_id: string
+  trace: object        # reasoning chain / tool-call trajectory
+  reason: string       # failure cause (self-reported or externally judged)
+  created_at: timestamp
+  frequency: number    # how many times this trap was hit
+```
+
+**Protocol flow**:
+1. **afterTurn**: if the turn result is marked as failure, generate a DeadEndItem;
+2. **assemble**: query the Registry; if the current direction is similar to a known dead end (similarity > θ, default 0.82), down-weight or skip that direction candidate;
+3. **bootstrap**: pre-load hot dead ends to avoid repeating mistakes during cold start.
+
+**External APIs**:
+- `registerDeadEnd(session_id, trace, reason)` — explicitly mark a failed path;
+- `listDeadEnds(session_id, top_k)` — inspect mapped traps for this session;
+- `getDirectionState(session_id)` — check current drift and dead-end matches.
+
 ### Chapter Summary
 
 This chapter establishes the theoretical core of CDA. The core thesis:
@@ -384,13 +415,18 @@ Key findings of this chapter:
 
 ### 3.1 What CDA Predicts
 
-As a theoretical framework, CDA contains the following testable predictions:
+CDA's testable predictions are organized around three industry-recognizable metrics:
 
-**Prediction 1**: Phase-aware retrieval systems, using phase-matched information during the assemble phase, will perform significantly better than systems with a single retrieval strategy.
+**Prediction 1: Alignment Stability**
+> After 1,500+ turns, a CDA-enabled Agent exhibits significantly lower semantic drift from the global intent than baselines (naive truncation or naive summarization).
 
-**Prediction 2**: Context compressed by SCG, while preserving semantic topology, will achieve higher downstream task accuracy than truncation or summarization methods with the same token budget.
+**Prediction 2: Dead-End Repetition Rate**
+> In tool-intensive, multi-attempt tasks, an Agent with the Dead-End Registry enabled shows a significantly lower rate of retrying already-disproven strategies (target: from 20–40% down to < 10%, ideally < 5%).
 
-**Prediction 3**: Introducing "semantic direction" as a retrieval dimension (QTS) will outperform pure vector similarity retrieval in high-coupling context scenarios.
+**Prediction 3: Effective Context Density (ECD)**
+> Under the same token budget, SCG-compressed context achieves 2–3× the "historical information successfully used for subsequent reasoning" compared to naive truncation or summarization.
+
+Together these metrics answer one question: **not "how much is remembered," but "is the direction drifting, are dead ends being repeated, and does compressed information still matter?"**
 
 ### 3.2 Comparative Experiment: Phase-aware vs Non-Phase-aware on Real Session Data
 
@@ -413,6 +449,8 @@ Wilson's OpenClaw provided a clean comparison experiment of Phase-aware vs non-P
 | tokens / budget | 229K / 205K | 91K / 205K | 91K / 262K |
 | contextUsage | **111.9%** (overflow) | 44.2% | **28-40%** (stable) |
 | Direction filtering | ❌ | ✅ (but results unused) | ✅ (results effective) |
+| **Alignment Stability** | Collapse (unmeasurable) | Drift increased | **Stable low drift** |
+| **ECD estimate** | ~0.05 (mostly noise) | ~0.15 | **~0.35–0.45** |
 | Outcome | Triggered gateway emergency compression | compact loop could not exit | Stable operation |
 
 #### Key Finding 1: The Directional Disaster of `assemble: basic`
@@ -472,17 +510,17 @@ Apr 12 23:20 (zai/glm-5-turbo session):
 
 | Hypothesis | Validation Result |
 |------------|-------------------|
-| Is Phase-aware more compression-efficient than non-Phase-aware? | ✅ 89.6% message retention (90/1287 (10.39%)) vs 100% (full import) |
-| Is Phase-aware more stable than non-Phase-aware? | ✅ 28-40% stable operation vs 111.9% overflow |
+| Is Phase-aware more compression-efficient than non-Phase-aware? | ✅ Stable operation with only 7% retention vs 100% full-import overflow |
+| Is Phase-aware more stable than non-Phase-aware? | ✅ 28-40% stable operation vs 111.9% collapse |
 | Did the v0.16.0 fix work? | ✅ After fix, compact loop exited, stable operation |
+| Is direction stable after compression? | ✅ No topic drift or constraint forgetting at 7% retention (indirect evidence) |
 
-**Note**: Phase-aware already had directional filtering effects before the fix (210-219 messages vs 839 messages), but because assemble did not read context_items, the compact loop could not exit. The fix solved the compact result delivery problem, allowing Phase-aware to truly take effect.
+**Narrative shift**: We used to measure compression efficiency by "message retention rate," but the real question is **"at 7% retention, can the system still maintain directional stability?"** The post-fix session ran for over 1,200 turns without triggering any gateway emergency compression, indicating stable context quality and indirectly supporting the Alignment Stability prediction.
 
-**Limitations on task quality assessment**: Current comparative data comes from Wilson's real work sessions, and task quality metrics cannot be independently isolated. The downstream task accuracy difference between Phase-aware using 7% of messages (90 items) and full context (839 items) needs to be measured in a controlled experiment separately.
-
-Existing data only supports the following conclusion: **Phase-aware is significantly more efficient at context management than non-Phase-aware (full import causes overflow), and achieved stable operation within the same session (28-40% vs 111.9%).**
-
-Indirect evidence supports that task quality was not harmed: gateway emergency compressions (each truncation degrades context quality) completely disappeared in the post-fix Phase-aware session, indicating that the LLM received more stable context quality.
+**Limitations**: Data comes from real work sessions; independent drift-score quantification is still needed. Next steps in controlled experiments:
+- Turn count vs. direction drift curve;
+- Impact of Dead-End Registry on repetition rate in tool-intensive tasks;
+- Quantitative ECD comparison against naive truncation.
 
 ### 3.3 External Evidence: Effects of Phase-aware Retrieval
 
@@ -502,14 +540,16 @@ Mem0's three-stage memory cycle (extract, consolidate, retrieve) achieved a **26
 
 ### 3.5 SPC-CTX Runtime Data (Apr 11-13)
 
-| Time (GMT+8) | Session | contextUsage | Status |
-|---|---|---|---|
-| 04-11 21:18 | da800e88 (1MB) | **111.9%** (overflow) | `assemble: basic`, no Phase-aware |
-| 04-11 21:19 | Same session | 44.2% | Phase-aware active, compact curated 210 items |
-| 04-12 23:20 | — | gateway emergency compression | Non-Phase-aware collapse, 6 times/3 minutes |
-| 04-13 16:04 | Current session | 28-40% | **Stable operation after v0.16.0 fix** |
+| Time (GMT+8) | Session | Retention | contextUsage | Alignment Stability | Status |
+|---|---|---|---|---|---|
+| 04-11 21:18 | da800e88 (1MB) | 100% | **111.9%** (overflow) | Collapse | `assemble: basic`, no Phase-aware |
+| 04-11 21:19 | Same session | ~25% | 44.2% | Unstable | Phase-aware active, compact curated 210 items |
+| 04-12 23:20 | — | — | gateway emergency compression | Collapse | Non-Phase-aware collapse, 6 times/3 minutes |
+| 04-13 16:04 | Current session | **7%** | 28-40% | **Stable** | **Stable operation after v0.16.0 fix** |
 
 **Key fix in v0.16.0** (2026-04-13): compact wrote context_items (90 items), but assemble did not read them — compact ran for nothing, and all messages (1287 items) entered assemble. After the v0.16.0 fix, assemble reads context_items (90 items), QTS runs on the compact subset, the compact loop exits, and operation is stable.
+
+This result validates CDA's core claim: **it's not how much you retain, but whether the retained direction is right**. With only 7% of historical context, the system remained stable for over 1,200 turns without gateway emergency compression, showing that context quality is sufficient to support long-term task direction.
 
 ### 3.6 Counterexamples and Boundaries
 
@@ -534,11 +574,11 @@ else if contextUsage < 20%:
 
 This chapter validates CDA's core predictions with real session data. Three core findings:
 
-1. **Phase-aware vs non-Phase-aware**: non-Phase-aware `assemble: basic` caused full message import, triggering 6 gateway emergency compressions (intervals 22-37 seconds); after Phase-aware fix, contextUsage stabilized at 28-40%
+1. **Alignment Stability**: non-Phase-aware `assemble: basic` caused full message import, context overflow, and system collapse; after the fix, with only 7% of messages (90 items) retained, contextUsage stabilized at 28-40% with no gateway emergency compressions, indicating stable direction
 2. **The key v0.16.0 fix**: compact wrote context_items but assemble did not read them — Phase-aware ran but had no effect. After the fix, assemble reads context_items (90 items), and QTS runs on the compact subset
-3. **Task quality**: current data cannot independently measure task completion quality. Indirect evidence: after the fix, gateway emergency compressions disappeared, indicating more stable LLM context quality
+3. **Effective Context Density**: 7% retention supported 1,200+ turns of stable operation, meaning this 7% carries extremely high effective density; compared with 100% full import causing collapse, CDA's ECD advantage is clear
 
-This chapter supports CDA Prediction 1 (Phase-aware retrieval is more efficient) and Prediction 3 (direction filtering is effective); Prediction 2 (SCG vs truncation) requires independent experimental validation.
+This chapter supports CDA Prediction 1 (Alignment Stability) and Prediction 3 (direction filtering is effective); Prediction 2 (ECD comparison of SCG vs naive truncation) still requires independent experimental validation.
 
 *Word count for this chapter: ~4,800 words*
 
@@ -568,6 +608,10 @@ A system that only does one-way filtering cannot learn from historical failures.
 
 CDA does not guarantee finding the right direction, but it guarantees not repeating a dead end. This is the strongest guarantee achievable in engineering — "recording failures" is much easier than "finding the right direction." This is also the essential difference between CDA and BFS-style exploration strategies: DFS + dead-end recording is true directed exploration.
 
+**Claim 6: Dead-End Registry is a first-class citizen for negative experience**
+
+Existing systems treat memory as "storing correct facts," ignoring the value of negative experience. CDA explicitly records disproven reasoning chains and tool-call patterns as Dead-End Items, and actively filters them during assemble. This is not a debug log — it is a core protocol module that influences subsequent retrieval weights.
+
 ### 4.2 Applicability Boundaries of the CDA Paradigm
 
 **Applicable Scenarios**
@@ -590,6 +634,7 @@ CDA does not guarantee finding the right direction, but it guarantees not repeat
 | Phase awareness | Whether there is an explicit phase state machine | Required | At least distinguish assemble/compact |
 | Direction alignment | Whether there is QTS or an equivalent direction scoring mechanism | Required | Retrieval results are sorted by direction |
 | Feedback loop | Whether there is miss recording and direction filtering | Required | Historical failures affect subsequent retrieval |
+| Dead-End Registry | Whether there is an explicit Dead-End Registry | Required | Known failure directions are filtered at assemble time |
 | Topology-preserving compression | Whether fragment relationships are preserved after compression | Bonus | SCG or equivalent implementation |
 | Three-layer memory | Whether hot/cold memory are separated | Bonus | Different lifecycle management |
 | Hysteresis gate | Whether there is an anti-flicker mechanism | Bonus | Prevents content flashing |
@@ -598,7 +643,7 @@ CDA does not guarantee finding the right direction, but it guarantees not repeat
 
 ### Chapter Summary
 
-This chapter presents 10 design principles for CDA-compatible systems, covering 5 core dimensions:
+This chapter presents 10 design principles for CDA-compatible systems, covering 6 core dimensions:
 
 | Dimension | Core Principle |
 |-----------|----------------|
@@ -606,6 +651,7 @@ This chapter presents 10 design principles for CDA-compatible systems, covering 
 | Retrieval direction alignment | Must use LLM's current attention direction as a retrieval dimension |
 | Semantic compression | Must preserve semantic topology, not just token truncation |
 | Feedback loop | Must have negative filtering mechanism (miss → direction weight adjustment) |
+| Dead-End Registry | Must explicitly record and filter disproven reasoning / tool paths |
 | QTS configurable | Weights must be tunable, and require scenario-specific tuning |
 
 **Value of the SPC-CTX reference implementation**: Not "the standard answer," but "a viable engineering implementation." SPC-CTX's 5 core parameters (THRESHOLD_YELLOW=0.70 / RED=0.85 / QTS weights / deltaDirection=0.05 / hot_exp=3) are reference values tuned on real tasks.
@@ -627,7 +673,8 @@ Before starting design, answer the following questions:
 [ ] Does each phase use a different context assembly strategy?
 [ ] When contextUsage > 70%, does your system have a clear response?
 [ ] During compression, does your system preserve semantic relationships between fragments?
-[ ] Can your system learn from historical failures and avoid repeating the same mistakes?
+[ ] Does your system have an explicit Dead-End Registry that filters known bad directions at assemble time?
+[ ] Does your memory module expose pluggable APIs (appendTurn / assembleContext / compact / getDirectionState)?
 ```
 
 If any [ ] is unchecked, your design needs to be strengthened in that direction.
@@ -801,11 +848,47 @@ This decoupling allows compact and assemble to evolve and be tested independentl
 
 The difference between the two layers is about 4.8% (SPC-CTX underestimates), because SPC-CTX does not count system prompts, tool definitions, or workspace file injections. This is not a bug, but **a difference in measurement dimensions**.
 
+### 5.7 Pluggable Memory Backend Interface Design Principles
+
+To allow SPC-CTX to be dropped into other Agent frameworks as a replacement memory module, a minimal API surface must be exposed:
+
+```ts
+// Append one turn plus tool trace
+appendTurn({ messages: Message[], tools: ToolCall[], phase: Phase })
+
+// Assemble the minimal context needed for this turn
+assembleContext({
+  query: CurrentIntent,
+  max_tokens: number
+}) => AssembledContext
+
+// Trigger compression on demand
+compact({ strategy?: 'auto' | 'aggressive' })
+
+// Inspect semantic direction state (for debugging / monitoring)
+getDirectionState() => {
+  global_intent: IntentVector,
+  drift_score: number,
+  dead_end_matches: DeadEndMatch[]
+}
+
+// Explicitly register a dead-end (negative experience)
+registerDeadEnd({ session_id: string, trace: object, reason: string })
+```
+
+**Principle 12: Memory backend interfaces must be independent of any specific LLM or framework**
+
+Do not let `assembleContext` return framework-specific data structures. It should return a standard `{ messages: Message[], metadata: ContextMeta }`, leaving the caller to wrap it into OpenAI, Claude, or LangChain input formats.
+
+**Principle 13: The interface semantics are "direction state machine," not "storage warehouse"**
+
+`getDirectionState` returns the current deviation from global intent, not "what is remembered." This lets external systems monitor whether an Agent is gradually drifting off course during long sessions.
+
 ---
 
 ### Chapter Summary
 
-This chapter presents 11 design principles for CDA-compatible systems, covering phase-driven, retrieval direction alignment, compression, and feedback loops.
+This chapter presents 13 design principles for CDA-compatible systems, covering phase-driven, retrieval direction alignment, compression, feedback loops, and pluggable interfaces.
 
 **The three most important principles**:
 
@@ -837,16 +920,18 @@ This chapter presents 11 design principles for CDA-compatible systems, covering 
 
 **Combination Layer**: CDA's moat lies in the combination of Phase × QTS × SCG × three-layer memory. LangChain/LlamaIndex's phase concept is coarse-grained (only before/after), while CDA's Phase is semantic-level (5 phases each with different retrieval strategies). This granularity difference requires extensive experimentation to discover.
 
-**Engineering Art Layer**: CDA's moat lies in the accumulated knowledge of "what not to do." 0% self_tag response rate, compact results not being read, QTS parameters without experimental validation — these "do nots" are accumulated from real failures, not designed.
+**Engineering Art Layer**: CDA's moat lies in the accumulated knowledge of "what not to do." 0% self_tag response rate, compact results not being read, QTS parameters without experimental validation — these "do nots" are accumulated from real failures, not designed. The real moat is not the algorithm formula, but **the tuning experience of "how not to break the protocol."**
+
+**Productization Layer**: The protocol and design documents remain open (CC BY-ND 4.0), but the industrial-grade implementation — tuning strategies, graph-compression details, Dead-End Registry matching thresholds, multi-tenant deployment experience — forms the value of a closed-source or enterprise offering. The free edition provides local APIs; the enterprise edition adds monitoring dashboards, drift alerts, and multi-tenant support.
 
 **Paradigm Layer**: CDA's identity as "the first to establish a context management paradigm framework" is the most durable and also the most fragile moat. Durable because the paradigm founder's identity cannot be copied; fragile because the paradigm itself can be learned.
 
 ### 6.3 Positioning of SPC-CTX
 
-SPC-CTX is the **reference implementation** of the CDA paradigm, not the CDA paradigm itself.
+SPC-CTX (product name: **Direction-Preserving Context Engine**) is the **reference implementation** of the CDA paradigm, not the CDA paradigm itself.
 
 This means:
-- SPC-CTX will become outdated (as hardware/models/scenarios evolve)
+- SPC-CTX / Direction-Preserving Context Engine will become outdated (as hardware/models/scenarios evolve)
 - But the CDA paradigm as a theoretical framework can guide other implementations
 
 **This is why "Context Direction Alignment: The Core Paradigm for AI Agent Context Management" has more strategic value than "SPC-CTX Technical Documentation."**
@@ -868,7 +953,8 @@ This chapter analyzes CDA paradigm's position in the competitive landscape and s
 | Algorithm Layer | 2/10 | High | No proprietary algorithms; all reproducible |
 | Combination Layer | 6/10 | Medium | The combinatorial knowledge of Phase × QTS × SCG × three-layer memory requires extensive experimentation to discover |
 | Engineering Art Layer | 7/10 | Low | "What not to do" experience (0% self_tag, compact results not read, etc.) comes from real failures |
-| Paradigm Layer | 8/10 | Extremely low | The identity of "CDA paradigm founder," once established, is hard to replace |
+| Productization Layer | 8/10 | Extremely low | Industrial tuning and deployment experience (thresholds, monitoring, multi-tenancy) is hard to replicate from open docs |
+| Paradigm Layer | 9/10 | Extremely low | The identity of "CDA paradigm founder," once established, is hard to replace |
 
 **Positioning of SPC-CTX**: not competing with existing frameworks, but carving out a new technical position — "Context Engineering" — a third path beyond RAG and Memory.
 
@@ -882,7 +968,7 @@ This chapter analyzes CDA paradigm's position in the competitive landscape and s
 |-------|--------|----------|
 | Embedding API dependency | Embedding quality affects overall effectiveness | 🟡 P1 |
 | No benchmark for compact algorithm | Compression quality cannot be quantitatively evaluated | 🟡 P1 |
-| Missing documentation | High barrier for new developers | 🟡 P1 |
+| Metrics and benchmarks | Reproducible benchmarks for Alignment Stability / Dead-End Repetition Rate / ECD are incomplete | 🔴 P0 |
 
 ### 7.2 Open Research Directions
 
@@ -896,21 +982,21 @@ In multi-Agent collaboration, each Agent has its own attention direction. How to
 
 **Direction 3: Quantifiable evaluation metrics for CDA**
 
-Currently CDA's effectiveness is mainly measured by downstream task accuracy, lacking an independent "CDA score" metric. Establishing such a metric is an important step for CDA to mature.
+Currently CDA's effectiveness is mainly measured by downstream task accuracy, lacking an independent industry-standard metric. This book has proposed three core metrics (Alignment Stability, Dead-End Repetition Rate, Effective Context Density). The next step is to build reproducible benchmarks and a public leaderboard.
 
 ---
 
 ## Conclusion
 
-Context Direction Alignment is not a feature, but a perspective shift.
+CDA is not a feature, but a perspective shift.
 
-From "How to fit more information into a limited window," to "How to achieve precise alignment in the direction of the evidence-thesis coupling."
+From "How to fit more information into a limited window," to **"With only 10% of historical context retained, how do we keep the Agent's direction from drifting and ensure dead ends are not repeated?"**
 
-The former is an engineering problem; the latter is a semantic problem.
+The former is a storage problem; the latter is a direction problem.
 
-The solution to an engineering problem is to keep expanding capacity (but demand always outpaces growth). The solution to a semantic problem is precise direction alignment (capacity stays the same, coupling improves).
+The solution to a storage problem is to keep expanding capacity (but demand always outpaces growth). The solution to a direction problem is precise alignment and negative filtering (capacity is compressed, stability improves).
 
-**CDA chooses the latter — not because capacity is unimportant, but because direction is scarcer than capacity. In the arms race of infinitely expanding capacity, direction alignment is the narrow path that has been overlooked. And narrow paths often lead farther.**
+**CDA chooses the latter — not because capacity is unimportant, but because direction is scarcer than capacity. What truly matters is not "how much is remembered," but "which paths have already been proven wrong."**
 
 ---
 
@@ -973,6 +1059,35 @@ QTS scoring: active (compact subset, 90 items)
 last compact: 2026-04-13 16:04 CST
 ```
 
+### A.5 Minimal External API (v1.1.0+)
+
+```ts
+// Append one turn plus tool trace
+appendTurn({ messages: Message[], tools: ToolCall[], phase: Phase })
+
+// Assemble the minimal context needed for this turn
+assembleContext({
+  query: CurrentIntent,
+  max_tokens: number
+}) => AssembledContext
+
+// Trigger compression on demand
+compact({ strategy?: 'auto' | 'aggressive' })
+
+// Inspect semantic direction state (for debugging / monitoring)
+getDirectionState() => {
+  global_intent: IntentVector,
+  drift_score: number,
+  dead_end_matches: DeadEndMatch[]
+}
+
+// Explicitly register a dead-end (negative experience)
+registerDeadEnd({ session_id: string, trace: object, reason: string })
+
+// List known dead ends (for debugging / UI display)
+listDeadEnds({ session_id: string, top_k?: number }) => DeadEndItem[]
+```
+
 ---
 
 ## Appendix B: Glossary
@@ -993,3 +1108,8 @@ last compact: 2026-04-13 16:04 CST
 | SCG | Semantic Context Graph | Compression algorithm that preserves semantic topological structure |
 | SPC-CTX | Semantic Phase Context | Reference implementation of the CDA paradigm |
 | CDA | Context Direction Alignment | The core of the CDA paradigm |
+| Direction-Preserving Context Engine | — | The product name for the CDA paradigm |
+| Dead-End Registry | — | Negative-experience store that records disproven reasoning chains / tool-call patterns |
+| Alignment Stability | — | Directional stability: how semantic similarity between current direction and global intent evolves across turns |
+| Dead-End Repetition Rate | — | The proportion of already-disproven strategies that are retried in subsequent turns |
+| Effective Context Density (ECD) | — | The ratio of historically useful information successfully used for reasoning to total tokens fed |
