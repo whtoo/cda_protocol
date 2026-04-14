@@ -39,7 +39,7 @@
 ### 核心机制
 
 - **方向追踪（Direction Tracking）**：记录当前语义方向 D 与全局意图的偏差，而非原始 token；
-- **死路注册表（Dead-End Registry）**：将被证伪的推理链 / 工具调用组合登记为负向经验，assemble 阶段自动降权；
+- **死路注册表（Dead-End Registry）**：将被证伪的推理链 / 工具调用组合登记为负向经验，assemble 阶段以系统提示注入，作为显式排除约束；
 - **语义压缩图（SCG）**：以拓扑结构保留推理骨干，即使压缩 90%，逻辑链条依然完整。
 
 ### 5 行接入示例
@@ -124,7 +124,7 @@ This is not a context-window size problem. It is a **direction-management** prob
 ### Core Mechanisms
 
 - **Direction Tracking**: Tracks the current semantic direction D and its deviation from global intent, rather than raw tokens.
-- **Dead-End Registry**: Records disproven reasoning chains / tool-call patterns as negative experience, automatically down-weighting them during `assemble`.
+- **Dead-End Registry**: Records disproven reasoning chains / tool-call patterns as negative experience, injecting them as explicit exclusion constraints during `assemble`.
 - **Semantic Compression Graph (SCG)**: Preserves the topological shape of reasoning; even after 90% compression, the logical skeleton survives.
 
 ### 5-Line Integration Example

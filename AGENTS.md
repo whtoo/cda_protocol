@@ -82,11 +82,11 @@ The manifest declares:
 - **5 lifecycle hooks**: `assemble`, `ingest`, `afterTurn`, `compact`, `bootstrap`.
 - **4 exports**: `qts`, `scg`, `direction`, `deadEndRegistry`.
 - **3 APIs**: `registerDeadEnd`, `listDeadEnds`, `getDirectionState`.
-- Hook-specific config thresholds (e.g. `delta_threshold`, `keep_threshold`, `dead_end_penalty`).
+- Hook-specific config thresholds (e.g. `delta_threshold`, `keep_threshold`).
 
 ### `hooks/`
 Each hook is a single async CommonJS function:
-- `assemble.js` — Filters candidate messages by semantic direction and the Dead-End Registry.
+- `assemble.js` — Filters candidate messages by semantic direction and injects Dead-End Registry matches as system-prompt exclusions.
 - `ingest.js` — Minimal stub; stores incoming messages.
 - `afterTurn.js` — Evaluates alignment score and registers dead ends post-turn.
 - `compact.js` — Stub for SCG-based semantic compression.
