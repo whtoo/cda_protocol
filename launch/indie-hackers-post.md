@@ -32,7 +32,7 @@ CDA delivers a **negative guarantee**: it does not promise you will find the rig
 
 From my own production session telemetry (April 2026):
 
-- Message retention dropped from **100% → 7%**
+- Message retention dropped from **100% → 10.39%**
 - Context usage stabilized from **111.9% overflow → 28–40%**
 - Session stability went from **~200 turns** to **1,287+ turns**
 - Gateway emergency compressions went from **6 in 3 minutes → 0**

@@ -960,7 +960,7 @@ Apr 12 23:20（zai/glm-5-turbo session）：
 
 |------|---------|
 
-| Phase-aware 比非 Phase-aware 压缩效率更高？ | ✅ 93% 消息保留率（90/1287）vs 100%（全部导入）|
+| Phase-aware 比非 Phase-aware 压缩效率更高？ | ✅ 93% 消息保留率（90/1287 (10.39%)）vs 100%（全部导入）|
 
 | Phase-aware 比非 Phase-aware 更稳定？ | ✅ 28-40% 稳定运行 vs 111.9% overflow |
 

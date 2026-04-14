@@ -472,7 +472,7 @@ Apr 12 23:20 (zai/glm-5-turbo session):
 
 | Hypothesis | Validation Result |
 |------------|-------------------|
-| Is Phase-aware more compression-efficient than non-Phase-aware? | ✅ 93% message retention (90/1287) vs 100% (full import) |
+| Is Phase-aware more compression-efficient than non-Phase-aware? | ✅ 89.6% message retention (90/1287 (10.39%)) vs 100% (full import) |
 | Is Phase-aware more stable than non-Phase-aware? | ✅ 28-40% stable operation vs 111.9% overflow |
 | Did the v0.16.0 fix work? | ✅ After fix, compact loop exited, stable operation |
 
