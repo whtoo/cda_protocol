@@ -946,16 +946,6 @@ This chapter analyzes CDA paradigm's position in the competitive landscape and s
 
 **Core finding**: all existing systems (MemGPT / Zep / LangChain / LlamaIndex) answer the "what to store" question — their differentiation lies in what content to store. CDA answers "when to retrieve + what direction to retrieve" — this is a fundamental paradigm difference.
 
-**Four-layer moat analysis**:
-
-| Layer | Strength | Replicability | Moat Source |
-|-------|----------|---------------|-------------|
-| Algorithm Layer | 2/10 | High | No proprietary algorithms; all reproducible |
-| Combination Layer | 6/10 | Medium | The combinatorial knowledge of Phase × QTS × SCG × three-layer memory requires extensive experimentation to discover |
-| Engineering Art Layer | 7/10 | Low | "What not to do" experience (0% self_tag, compact results not read, etc.) comes from real failures |
-| Productization Layer | 8/10 | Extremely low | Industrial tuning and deployment experience (thresholds, monitoring, multi-tenancy) is hard to replicate from open docs |
-| Paradigm Layer | 9/10 | Extremely low | The identity of "CDA paradigm founder," once established, is hard to replace |
-
 **Positioning of SPC-CTX**: not competing with existing frameworks, but carving out a new technical position — "Context Engineering" — a third path beyond RAG and Memory.
 
 ---
